@@ -1,6 +1,7 @@
 import pyrebase
 from gpsmodule import GPS_Data
 from mpu_6050 import Get_ACC
+from INA219 import INA219
 
 config = {
     "apiKey": "AIzaSyA5BcvaQYFaVBCyJEFTbqOWCUDKdUyh7Bw",
@@ -16,6 +17,21 @@ firebase = pyrebase.initialize_app(config)
 Sensor_Data = firebase.database()
 
 while True:
+    ina219 = INA219(addr=0x42)
+    bus_voltage = ina219.getBusVoltage_V()
+    p = (bus_voltage - 6)/2.4*100
+    
+    if(p > 100):
+        p = 100
+    if(p < 0):
+        p = 0
+    current = ina219.getCurrent_mA()  
+
+    if (current > 0): 
+        current = True
+    else:
+        current = False
+
     a, b = GPS_Data()
     temp, ax, ay, az, gx, gy, gz = Get_ACC()
 
@@ -30,4 +46,8 @@ while True:
     Sensor_Data.child("Gyroscope Data")
     data_3 = {"Gyro X": gx, "Gyro Y": gy, "Gyro Z": gz}
     Sensor_Data.set(data_3)
+
+    Sensor_Data.child("Battery Information")
+    data_4 = {"Percentage": p, "Charging?": current}
+    Sensor_Data.set(data_4)
     
