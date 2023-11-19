@@ -35,19 +35,19 @@ while True:
     a, b = GPS_Data()
     temp, ax, ay, az, gx, gy, gz = Get_ACC()
 
-    Sensor_Data.child("GPS Data")
+    Sensor_Data.child("IRQgSMRaKZltXjuUhgc3/GPS Data")
     data_1 = {"Latitude": a, "Longitude": b}
     Sensor_Data.set(data_1)
 
-    Sensor_Data.child("Accelermeter Data")
+    Sensor_Data.child("IRQgSMRaKZltXjuUhgc3/Accelermeter Data")
     data_2 = {"Temperature": temp, "Acc X": ax, "Acc Y": ay, "Acc Z": az}
     Sensor_Data.set(data_2)
     
-    Sensor_Data.child("Gyroscope Data")
+    Sensor_Data.child("IRQgSMRaKZltXjuUhgc3/Gyroscope Data")
     data_3 = {"Gyro X": gx, "Gyro Y": gy, "Gyro Z": gz}
     Sensor_Data.set(data_3)
 
-    Sensor_Data.child("Battery Information")
+    Sensor_Data.child("IRQgSMRaKZltXjuUhgc3/Battery Information")
     data_4 = {"Percentage": p, "Charging?": current}
     Sensor_Data.set(data_4)
     
