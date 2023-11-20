@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:helmetapp/firebase_options.dart';
+import 'location_map.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(const MyApp());
+  // runApp(const MaterialApp(home: StreamLocation()));
 }
 
 class MyApp extends StatelessWidget {
