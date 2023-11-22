@@ -1,41 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
-
-
-class LocationDataService {
-  final dbRef = FirebaseDatabase.instance.ref('Devices/IRQgSMRaKZltXjuUhgc3/GPS Data');
-
-  Future<String> getAddressFromLatLng(double latitude, double longitude) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
-      Placemark place = placemarks[0];
-      return "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return "Failed to get address";
-    }
-  }
-
-  Stream<LatLng> get locationStream => dbRef.onValue.map((event) {
-    final data = Map<String, dynamic>.from(event.snapshot.value as Map);
-    double latitude = double.parse(data['Latitude']);
-    double longitude = double.parse(data['Longitude']);
-    return LatLng(latitude, longitude);
-  });
-}
-
-class BatteryDataService {
-  final dbRef = FirebaseDatabase.instance.ref('Devices/IRQgSMRaKZltXjuUhgc3/Battery Information');
-
-  Stream<Map<String, dynamic>> get batteryStream => dbRef.onValue.map((event) {
-    return Map<String, dynamic>.from(event.snapshot.value as Map);
-  });
-}
+import 'package:smart_helmet_app/services/battery_data_service.dart';
+import 'package:smart_helmet_app/services/location_data_service.dart';
 
 
 class MapScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:smart_helmet_app/firebase_options.dart';
+import 'package:smart_helmet_app/services/firebase_options.dart';
 import 'map_view.dart';
 
 void main() async {
