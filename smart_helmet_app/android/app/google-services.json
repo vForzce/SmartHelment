@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "168206761654",
+    "firebase_url": "https://iot-smart-helmet-5a382-default-rtdb.firebaseio.com",
+    "project_id": "iot-smart-helmet-5a382",
+    "storage_bucket": "iot-smart-helmet-5a382.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168206761654:android:678676342c80ebdb9e7017",
+        "android_client_info": {
+          "package_name": "com.example.smart_helmet_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATQBxwER-vE_3CJNJ4AvDmQ_X9SMGJJ9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
