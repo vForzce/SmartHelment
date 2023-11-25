@@ -47,7 +47,4 @@ def GPS_Data():
             GNGGA_buffer = received_data.split("$GNGGA,", 1)[1]
             NMEA_buff = GNGGA_buffer.split(',')
             lat_in_degrees, long_in_degrees = GPS_Info(NMEA_buff)
-            lat = "{}".format(lat_in_degrees)
-            long = "{}".format(long_in_degrees)
-            return lat, long
-            #print("lat in degrees:", lat_in_degrees, "long in degree:", long_in_degrees, '\n')
+            return lat_in_degrees, long_in_degrees
