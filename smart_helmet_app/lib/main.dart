@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:smart_helmet_app/screens/map_view.dart';
-import 'package:smart_helmet_app/screens/signin_screen.dart';
+// import 'package:smart_helmet_app/screens/signin_screen.dart';
 import 'package:smart_helmet_app/services/firebase_options.dart';
 
 void main() async {

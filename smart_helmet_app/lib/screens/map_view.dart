@@ -4,6 +4,7 @@ import 'package:smart_helmet_app/reusable_widgets/info_panel.dart';
 import 'package:smart_helmet_app/services/battery_data_service.dart';
 import 'package:smart_helmet_app/services/crash_detection_service.dart';
 import 'package:smart_helmet_app/services/location_data_service.dart';
+import 'package:smart_helmet_app/services/permissions_services.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -28,6 +29,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    PermissionsUtil.requestLocationPermission(); // Request permission
 
     _locationDataService.locationStream.listen((newPosition) async {
       String address = await _locationDataService.getAddressFromLatLng(
