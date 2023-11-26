@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:smart_helmet_app/reusable_widgets/info_panel.dart';
 import 'package:smart_helmet_app/services/battery_data_service.dart';
+import 'package:smart_helmet_app/services/crash_detection_service.dart';
 import 'package:smart_helmet_app/services/location_data_service.dart';
 
 class MapScreen extends StatefulWidget {
@@ -17,9 +19,11 @@ class _MapScreenState extends State<MapScreen> {
   String address = "";
   double batteryPercentage = 0.0;
   bool isCharging = false;
+  bool crashDetected = false;
 
   final LocationDataService _locationDataService = LocationDataService();
   final BatteryDataService _batteryDataService = BatteryDataService();
+  final CrashDetectionService _crashDetectionService = CrashDetectionService();
 
   @override
   void initState() {
@@ -50,6 +54,18 @@ class _MapScreenState extends State<MapScreen> {
         isCharging = data['Charging?'] == true;
       });
     });
+  
+  // Listen for crash detection updates
+    _crashDetectionService.crashDetectedStream.listen((bool detected) {
+      if (detected) {
+        // React to crash being detected
+        setState(() {
+          crashDetected = detected;
+        });
+        // Here you can also trigger any alerts or notifications
+      }
+    });
+
   }
 
   @override
@@ -64,23 +80,6 @@ class _MapScreenState extends State<MapScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                Text('Battery: ${batteryPercentage.toInt()}%',
-                    style: const TextStyle(fontSize: 14)),
-                const SizedBox(width: 10), // Spacing between the two texts
-                Text(isCharging ? "Charging" : "Not Charging",
-                    style: const TextStyle(fontSize: 14)),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child:
-                Text('Address: $address', style: const TextStyle(fontSize: 14)),
-          ),
           Expanded(
             child: GoogleMap(
               onMapCreated: (GoogleMapController controller) {
@@ -90,6 +89,11 @@ class _MapScreenState extends State<MapScreen> {
                   CameraPosition(target: initialPosition, zoom: 2),
               markers: markers,
             ),
+          ),
+          InfoPanel(batteryPercentage: batteryPercentage, 
+            isCharging: isCharging, 
+            address: address,
+            crashDetected: crashDetected
           ),
         ],
       ),
