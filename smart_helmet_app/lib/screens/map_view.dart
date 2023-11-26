@@ -4,11 +4,9 @@ import 'package:smart_helmet_app/reusable_widgets/info_panel.dart';
 import 'package:smart_helmet_app/services/battery_data_service.dart';
 import 'package:smart_helmet_app/services/crash_detection_service.dart';
 import 'package:smart_helmet_app/services/location_data_service.dart';
-<<<<<<< HEAD
 import 'package:smart_helmet_app/services/permissions_services.dart';
-=======
 import 'package:smart_helmet_app/services/color_utils.dart';
->>>>>>> 636e5c2b82c01cd57ef34236871e314202f70d4b
+
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -30,29 +28,34 @@ class _MapScreenState extends State<MapScreen> {
   final BatteryDataService _batteryDataService = BatteryDataService();
   final CrashDetectionService _crashDetectionService = CrashDetectionService();
 
-  @override
-  void initState() {
-    super.initState();
-    PermissionsUtil.requestLocationPermission(); // Request permission
-
+  void updateLocationAndAddress() {
     _locationDataService.locationStream.listen((newPosition) async {
-      String address = await _locationDataService.getAddressFromLatLng(
-          newPosition.latitude, newPosition.longitude);
+      String newAddress = await _locationDataService.getAddressFromLatLng(
+        newPosition.latitude,
+        newPosition.longitude,
+      );
 
       setState(() {
         initialPosition = newPosition;
-        address = address;
+        address = newAddress; // Update the address in the state
         markers.clear();
-        markers.add(Marker(
-            markerId: const MarkerId('deviceLocation'), position: newPosition));
+        markers.add(
+          Marker(
+            markerId: const MarkerId('deviceLocation'),
+            position: newPosition,
+          ),
+        );
       });
 
       mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
-            CameraPosition(target: newPosition, zoom: 17)),
+          CameraPosition(target: newPosition, zoom: 17),
+        ),
       );
     });
+  }
 
+  void updateBatteryInformation(){
     _batteryDataService.batteryStream.listen((data) {
       setState(() {
         batteryPercentage =
@@ -60,7 +63,9 @@ class _MapScreenState extends State<MapScreen> {
         isCharging = data['Charging?'] == true;
       });
     });
+  }
 
+  void updateCrashDetection(){
     // Listen for crash detection updates
     _crashDetectionService.crashDetectedStream.listen((bool detected) {
       if (detected) {
@@ -71,6 +76,16 @@ class _MapScreenState extends State<MapScreen> {
         // Here you can also trigger any alerts or notifications
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    PermissionsUtil.requestLocationPermission(); // Request permission
+    updateLocationAndAddress();
+    updateBatteryInformation();
+    updateCrashDetection();
+    
   }
 
   @override
