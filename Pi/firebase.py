@@ -50,4 +50,8 @@ while True:
     Sensor_Data.child("Devices/IRQgSMRaKZltXjuUhgc3/Battery Information")
     data_4 = {"Percentage": p, "Charging?": current}
     Sensor_Data.set(data_4)
+
+    Sensor_Data.child("Devices/IRQgSMRaKZltXjuUhgc3/Crash Detection")
+    data_5 = {"Stagnet Location?": True, "Severe Vibrations?": True, "Helment Orientation": "Leveled", "Crash Detected?": True}
+    Sensor_Data.set(data_5)
     
