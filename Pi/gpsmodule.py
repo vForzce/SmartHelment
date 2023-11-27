@@ -12,7 +12,9 @@ def GPS_Info(NMEA_buff):
     #print("NMEA Time: ", nmea_time, '\n')
     #print("NMEA Latitude:", nmea_latitude, "NMEA Longitude:", nmea_longitude, '\n')
 
-
+    if not nmea_latitude or not nmea_longitude:
+        return 0, 0  # or some default values
+    
     lat = float(nmea_latitude)
     longi = float(nmea_longitude)
 
@@ -39,7 +41,7 @@ def convert_to_degrees(raw_value):
 
 def GPS_Data():
     gngga_info = "$GNGGA,"
-    ser = serial.Serial("/dev/ttyUSB0")
+    ser = serial.Serial("/dev/ttyAMA0")
     while True:
         received_data = str(ser.readline())
         GNGGA_data_available = received_data.find(gngga_info)

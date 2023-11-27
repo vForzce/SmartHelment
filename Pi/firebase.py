@@ -2,6 +2,8 @@ import pyrebase
 from gpsmodule import GPS_Data
 from mpu_6050 import Get_ACC
 from INA219 import INA219
+from orientation import get_orientation, severe_vibrations, stag_location
+from time import sleep
 
 config = {
     "apiKey": "AIzaSyA5BcvaQYFaVBCyJEFTbqOWCUDKdUyh7Bw",
@@ -17,10 +19,14 @@ firebase = pyrebase.initialize_app(config)
 Sensor_Data = firebase.database()
 
 while True:
+    vibration = severe_vibrations()
+    orientation = get_orientation()
+    location = True
+    crash = False
     ina219 = INA219(addr=0x42)
     bus_voltage = ina219.getBusVoltage_V()
     p = (bus_voltage - 6)/2.4*100
-    
+   
     if(p > 100):
         p = 100
     if(p < 0):
@@ -31,6 +37,18 @@ while True:
         current = True
     else:
         current = False
+    
+    if((orientation == "Facing Up" or orientation == "Facing Down" or orientation == "Titled Left" or orientation == "Titled Right" or 
+       orientation == "Upside Down" or orientation == "Upright") and vibration == True and location == True):
+        crash = True
+        print("Crash Detected")
+        sleep(3)
+        if((orientation == "Facing Up" or orientation == "Facing Down" or orientation == "Titled Left" or orientation == "Titled Right" or 
+            orientation == "Upside Down" or orientation == "Upright") and vibration == False and location == True):
+            crash = True
+            sleep(3)
+            if(orientation == "Upright" and vibration == False and location == True or False):
+                crash = False
 
     a, b = GPS_Data()
     temp, ax, ay, az, gx, gy, gz = Get_ACC()
@@ -52,6 +70,5 @@ while True:
     Sensor_Data.set(data_4)
 
     Sensor_Data.child("Devices/IRQgSMRaKZltXjuUhgc3/Crash Detection")
-    data_5 = {"Stagnet Location?": True, "Severe Vibrations?": True, "Helment Orientation": "Leveled", "Crash Detected?": True}
+    data_5 = {"Severe Vibrations?": vibration, "Helment Orientation": orientation, "Crash Detected?": crash, "Stagnet Location": location}
     Sensor_Data.set(data_5)
-    
