@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_helmet_app/reusable_widgets/reusable_widget.dart';
 import 'package:smart_helmet_app/screens/signin_screen.dart';
@@ -83,13 +84,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   email: _emailTextController.text,
                                   password: _passwordTextController.text)
                               .then((value) {
-                            print("Created New Account");
+                            if (kDebugMode) {
+                              print("Created New Account");
+                            }
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const MapScreen()));
                           }).onError((error, stackTrace) {
-                            print("Error ${error.toString()}");
+                            if (kDebugMode) {
+                              print("Error ${error.toString()}");
+                            }
                           });
                         }),
                         signInOption()
