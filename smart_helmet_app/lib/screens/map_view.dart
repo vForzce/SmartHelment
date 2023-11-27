@@ -8,7 +8,6 @@ import 'package:smart_helmet_app/services/notification_service.dart';
 import 'package:smart_helmet_app/services/permissions_services.dart';
 import 'package:smart_helmet_app/services/color_utils.dart';
 
-
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -57,7 +56,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  void updateBatteryInformation(){
+  void updateBatteryInformation() {
     _batteryDataService.batteryStream.listen((data) {
       setState(() {
         batteryPercentage =
@@ -67,7 +66,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  void updateCrashDetection(){
+  void updateCrashDetection() {
     // Listen for crash detection updates
     _notificationService.init();
     _crashDetectionService.crashDetectedStream.listen((bool detected) {
@@ -124,6 +123,38 @@ class _MapScreenState extends State<MapScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement texting functionality
+                    },
+                    child: const Icon(
+                      Icons.message,
+                      color: Colors.black,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement calling number functionality
+                    },
+                    child: const Icon(
+                      Icons.phone,
+                      color: Colors.black,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement calling 911 functionality
+                    },
+                    child: const Icon(
+                      Icons.emergency,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
               // Container with curved edges
               Container(
                 padding: const EdgeInsets.all(10.0),

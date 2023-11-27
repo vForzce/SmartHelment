@@ -26,13 +26,9 @@ class InfoPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Battery
-            _buildBubble('Battery: ${batteryPercentage.toInt()}%'),
-
-            // Charging Status
+            // Battery & Charging Status
             _buildBubble(
-              isCharging ? "Charging" : "Not Charging",
-            ),
+                'Battery: ${batteryPercentage.toInt()}% ${isCharging ? "Charging" : "Not Charging"}'),
 
             // Address
             _buildBubble('Address: $address'),
