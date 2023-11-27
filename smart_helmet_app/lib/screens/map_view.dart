@@ -4,6 +4,7 @@ import 'package:smart_helmet_app/reusable_widgets/info_panel.dart';
 import 'package:smart_helmet_app/services/battery_data_service.dart';
 import 'package:smart_helmet_app/services/crash_detection_service.dart';
 import 'package:smart_helmet_app/services/location_data_service.dart';
+import 'package:smart_helmet_app/services/notification_service.dart';
 import 'package:smart_helmet_app/services/permissions_services.dart';
 import 'package:smart_helmet_app/services/color_utils.dart';
 
@@ -27,6 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   final LocationDataService _locationDataService = LocationDataService();
   final BatteryDataService _batteryDataService = BatteryDataService();
   final CrashDetectionService _crashDetectionService = CrashDetectionService();
+  final NotificationService _notificationService = NotificationService();
 
   void updateLocationAndAddress() {
     _locationDataService.locationStream.listen((newPosition) async {
@@ -67,6 +69,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void updateCrashDetection(){
     // Listen for crash detection updates
+    _notificationService.init();
     _crashDetectionService.crashDetectedStream.listen((bool detected) {
       if (detected) {
         // React to crash being detected
@@ -74,6 +77,7 @@ class _MapScreenState extends State<MapScreen> {
           crashDetected = detected;
         });
         // Here you can also trigger any alerts or notifications
+        _notificationService.showCrashDetectedNotification();
       }
     });
   }
@@ -85,7 +89,6 @@ class _MapScreenState extends State<MapScreen> {
     updateLocationAndAddress();
     updateBatteryInformation();
     updateCrashDetection();
-    
   }
 
   @override
